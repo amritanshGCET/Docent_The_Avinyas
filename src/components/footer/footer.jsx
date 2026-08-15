@@ -92,7 +92,7 @@ function Footer() {
                 {/* Bottom Section */}
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <p className="text-sm text-slate-400">
-                        © 2024 LucknowExplore. All rights reserved.
+                        © 2026 Avinyas. All rights reserved.
                     </p>
                     <div className="mt-4 md:mt-0 flex gap-6">
                         <a href="#" className="text-xs text-slate-400 hover:text-violet-400 transition-colors">

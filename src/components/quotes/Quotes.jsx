@@ -8,7 +8,7 @@ function Quotes() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % travelQuotes.length)
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(interval)
   }, [])
