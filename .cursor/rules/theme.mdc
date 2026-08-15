@@ -1,0 +1,26 @@
+---
+description: Site color theme — violet-600, black, and white
+alwaysApply: true
+---
+
+# Site Theme
+
+Use this palette consistently across all UI:
+
+| Role | Tailwind | Hex |
+|------|----------|-----|
+| Primary accent | `violet-600` | `#7c3aed` |
+| Text & dark UI | `black` | `#000000` |
+| Backgrounds | `white` | `#ffffff` |
+
+## Guidelines
+
+- **Primary actions & accents**: `bg-violet-600`, `text-violet-600`, `border-violet-600`
+- **Soft accent backgrounds**: `bg-violet-600/10`, hover states `hover:bg-violet-600/10 hover:text-violet-600`
+- **Focus rings**: `focus:border-violet-600 focus:ring-violet-600/20`
+- **Primary text**: `text-black`; muted text `text-black/70` or `text-black/40` for placeholders
+- **Borders & dividers**: `border-black/10`
+- **Dark buttons** (e.g. Sign In): `bg-black text-white hover:bg-violet-600`
+- **Page background**: always `bg-white`
+
+Do not introduce other accent colors (green, blue, etc.) unless the user explicitly requests them.
