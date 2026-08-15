@@ -15,7 +15,7 @@ function ReviewCarousel() {
   const activeReview = reviews[activeIndex]
 
   return (
-    <div className="relative overflow-hidden rounded-[32px] border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-sky-50 p-6 shadow-[0_25px_80px_rgba(124,58,237,0.12)] sm:p-8">
+    <div className="relative overflow-hidden rounded-32px border border-violet-100 bg-linear-to-br from-violet-50 via-white to-sky-50 p-6 shadow-[0_25px_80px_rgba(124,58,237,0.12)] sm:p-8">
       <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-violet-300/30 blur-3xl" />
       <div className="absolute -bottom-16 -left-8 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl" />
 
@@ -42,7 +42,7 @@ function ReviewCarousel() {
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-500 text-lg font-bold text-white shadow-lg shadow-violet-600/20">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-violet-600 to-indigo-500 text-lg font-bold text-white shadow-lg shadow-violet-600/20">
                 {activeReview.initials}
               </div>
 

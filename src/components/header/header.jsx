@@ -14,7 +14,7 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-3 sm:px-4 lg:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-2 sm:px-3 lg:px-4">
         {/* Logo */}
         <div className="flex shrink-0 items-center">
           <div

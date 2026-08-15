@@ -8,7 +8,7 @@ const options = [
 
 function Main() {
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-5 sm:px-4 lg:px-6">
+    <main className="mx-auto w-full max-w-7xl flex-1 px-2 py-3 sm:px-3 lg:px-4">
       <div className='flex flex-row'>
       <div className="grid grid-cols-1 gap-6 lg:w-[30%] lg:min-w-300px lg:grid-cols-1">
         <aside className="rounded-[28px] border border-slate-200 bg-slate-50/80 p-4 shadow-[0_16px_45px_rgba(15,23,42,0.04)] backdrop-blur-sm sm:p-5">
