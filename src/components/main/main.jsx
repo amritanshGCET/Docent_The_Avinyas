@@ -1,9 +1,10 @@
 import ReviewCarousel from '../reviews/ReviewCarousel.jsx'
 import Visit from './Visit.jsx'
+import Quotes from '../quotes/Quotes.jsx'
 const options = [
-  { title: 'Tour planner', icon: '✦', active: true },
-  { title: 'Crowd analysis', icon: '◌', active: false },
-  { title: 'Route navigator', icon: '↗', active: false },
+  { title: 'Tour planner', icon: '✦', active: true, description: 'Plan your perfect tour itinerary' },
+  { title: 'Crowd analysis', icon: '◌', active: false, description: 'Real-time crowd insights and statistics' },
+  { title: 'Route navigator', icon: '↗', active: false, description: 'Navigate between locations efficiently' },
 ]
 
 function Main() {
@@ -12,7 +13,10 @@ function Main() {
       <div className='flex flex-row'>
       <div className="grid grid-cols-1 gap-6 lg:w-[30%] lg:min-w-300px lg:grid-cols-1">
         <aside className="rounded-[28px] border border-slate-200 bg-slate-50/80 p-4 shadow-[0_16px_45px_rgba(15,23,42,0.04)] backdrop-blur-sm sm:p-5">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex items-start gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-violet-100 shrink-0">
+              <span className="text-2xl font-bold text-violet-600">✦</span>
+            </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                 Explore
@@ -32,15 +36,14 @@ function Main() {
                     : 'border-transparent bg-white text-slate-700 hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700'
                 }`}
               >
-                <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold ${
-                    option.active ? 'bg-white/15 text-white' : 'bg-violet-100 text-violet-600'
-                  }`}
-                >
-                  {option.icon}
-                </span>
-
-                <span className="text-base font-semibold">{option.title}</span>
+                <div className="flex flex-col flex-1">
+                  <span className="text-base font-semibold">{option.title}</span>
+                  <span className={`text-xs mt-1 ${
+                    option.active ? 'text-white/80' : 'text-slate-500'
+                  }`}>
+                    {option.description}
+                  </span>
+                </div>
               </button>
             ))}
           </div>
@@ -51,6 +54,7 @@ function Main() {
         <Visit />
       </section>
       </div>
+        <Quotes />
         <section className="flex items-center justify-center my-3">
           <div className="w-full">
             <ReviewCarousel />

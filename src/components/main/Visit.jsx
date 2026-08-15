@@ -59,10 +59,11 @@ function Visit() {
     if (!mapRef.current) return
 
     const map = L.map(mapRef.current, {
-      zoomControl: false,
+      
       dragging:false,
       doubleClickZoom: false,
       doubleClickZoom:false,
+      scrollWheelZoom:false,
     }).setView([26.8718, 80.91053], 16)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
