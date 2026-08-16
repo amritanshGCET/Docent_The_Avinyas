@@ -8,7 +8,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import './TripMain.css';
+import 'leaflet/dist/leaflet.css';
 
 const createId = () => Date.now() + Math.random();
 
@@ -136,64 +136,78 @@ export default function TripMain() {
   const defaultCenter = [48.8566, 2.3522];
 
   return (
-    <div>
-      <main className="main-grid">
-        <div>
-          <div>
-            <h1 className="title">Plan your next adventure</h1>
-            <p className="subtitle">Build, organize, and map out your perfect itinerary.</p>
+    <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <main className="grid grid-cols-1 gap-8 lg:grid-cols-[1.25fr_0.95fr]">
+        <section>
+          <div className="mb-8">
+            <h1 className="mb-2 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
+              Plan your next adventure
+            </h1>
+            <p className="max-w-2xl text-base text-black/70 sm:text-lg">
+              Build, organize, and map out your perfect itinerary.
+            </p>
           </div>
 
-          <div className="search-section">
-            <div className="search-box">
-              <div className="search-input-wrapper">
-                <Search className="search-icon" size={20} />
+          <div className="mb-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative min-w-0 flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/40" size={20} />
                 <input
                   type="text"
                   placeholder="Where do you want to go?"
-                  className="search-input"
+                  className="w-full rounded-xl border border-black/10 bg-black/3 py-3 pl-10 pr-4 text-sm text-black placeholder:text-black/45 outline-none transition focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/20"
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
                 />
               </div>
-            </div>
 
-            <button className="btn-primary btn-full-width" type="button">
-              Start Planning
-            </button>
+              <button
+                className="inline-flex w-full items-center justify-center rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-600 sm:w-auto"
+                type="button"
+              >
+                Start Planning
+              </button>
+            </div>
           </div>
 
           <div>
-            <div className="section-header-wrapper">
-              <h2 className="section-title">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="inline-flex items-center gap-2 text-2xl font-semibold text-black">
                 <Calendar size={24} />
                 Your Itinerary
               </h2>
-              <button className="btn-outline" type="button" onClick={addDay}>
+              <button
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-black/15 bg-white px-4 py-2.5 text-sm font-medium text-black transition hover:border-violet-500 hover:bg-violet-500/10 hover:text-violet-700"
+                type="button"
+                onClick={addDay}
+              >
                 <Plus size={16} /> Add Day
               </button>
             </div>
 
             {itinerary.map((day) => (
-              <div className="card" key={day.id}>
-                <div className="card-header">
+              <article
+                className="mb-5 rounded-2xl border border-black/10 bg-white p-4 shadow-sm sm:p-5"
+                key={day.id}
+              >
+                <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <input
-                    className="card-title-input"
+                    className="w-full rounded-lg border border-transparent bg-black/3 px-3 py-2 text-lg font-semibold text-black outline-none transition focus:border-violet-500 focus:bg-white focus:ring-2 focus:ring-violet-500/20"
                     value={day.title}
                     onChange={(e) => updateDay(day.id, 'title', e.target.value)}
                     aria-label="Day title"
                   />
 
-                  <div className="card-header-actions">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <input
                       type="date"
-                      className="date-input"
+                      className="rounded-lg border border-black/10 px-3 py-2 text-sm text-black outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                       value={day.date}
                       onChange={(e) => updateDay(day.id, 'date', e.target.value)}
                       aria-label="Day date"
                     />
                     <button
-                      className="icon-button danger"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-red-200 text-red-500 transition hover:bg-red-50"
                       type="button"
                       onClick={() => removeDay(day.id)}
                       aria-label="Remove day"
@@ -203,22 +217,25 @@ export default function TripMain() {
                   </div>
                 </div>
 
-                <ul className="activity-list">
+                <ul className="space-y-3">
                   {day.activities.map((activity) => (
-                    <li className="activity-item" key={activity.id}>
-                      <div className="activity-icon">
+                    <li
+                      className="flex gap-3 rounded-xl border border-black/10 bg-black/2 p-3"
+                      key={activity.id}
+                    >
+                      <div className="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/10 text-violet-700">
                         {activity.icon === 'clock' ? <Clock size={20} /> : <MapPin size={20} />}
                       </div>
 
-                      <div className="activity-editor">
+                      <div className="min-w-0 flex-1 space-y-2">
                         <input
-                          className="activity-title-input"
+                          className="w-full rounded-lg border border-transparent bg-white px-3 py-2 text-sm font-medium text-black outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                           value={activity.title}
                           onChange={(e) => updateActivity(day.id, activity.id, 'title', e.target.value)}
                           aria-label="Activity title"
                         />
                         <textarea
-                          className="activity-desc-input"
+                          className="w-full rounded-lg border border-transparent bg-white px-3 py-2 text-sm text-black/80 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                           value={activity.description}
                           rows={2}
                           onChange={(e) =>
@@ -232,20 +249,20 @@ export default function TripMain() {
                 </ul>
 
                 <button
-                  className="btn-outline btn-dashed"
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl border border-dashed border-black/30 px-4 py-2 text-sm font-medium text-black transition hover:border-violet-500 hover:bg-violet-500/10 hover:text-violet-700"
                   type="button"
                   onClick={() => addActivity(day.id)}
                 >
                   <Plus size={16} /> Add Activity
                 </button>
-              </div>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div>
-          <div className="map-placeholder">
-            <MapContainer center={defaultCenter} zoom={11} scrollWheelZoom className="map-shell">
+        <aside className="space-y-5 lg:sticky lg:top-24 lg:h-fit">
+          <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+            <MapContainer center={defaultCenter} zoom={11} scrollWheelZoom className="h-90 w-full sm:h-105">
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -263,28 +280,31 @@ export default function TripMain() {
             </MapContainer>
           </div>
 
-          <div className="summary-card">
-            <h3 className="summary-title">Trip Summary</h3>
-            <div>
-              <div className="summary-row">
+          <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+            <h3 className="mb-4 text-xl font-semibold text-black">Trip Summary</h3>
+            <div className="space-y-3 text-sm text-black/70">
+              <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
                 <span>Duration:</span>
-                <span className="summary-value">{itinerary.length} Days</span>
+                <span className="font-semibold text-black">{itinerary.length} Days</span>
               </div>
-              <div className="summary-row">
+              <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
                 <span>Travelers:</span>
-                <span className="summary-value">2 Adults</span>
+                <span className="font-semibold text-black">2 Adults</span>
               </div>
-              <div className="summary-row">
+              <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
                 <span>Est. Budget:</span>
-                <span className="summary-value large">₹1,200</span>
+                <span className="text-lg font-semibold text-black">₹1,200</span>
               </div>
             </div>
 
-            <button className="btn-finalize" type="button">
+            <button
+              className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+              type="button"
+            >
               Finalize Trip
             </button>
           </div>
-        </div>
+        </aside>
       </main>
     </div>
   );

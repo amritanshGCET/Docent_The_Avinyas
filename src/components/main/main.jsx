@@ -7,7 +7,13 @@ const options = [
   { title: 'Route navigator', icon: '↗', active: false, description: 'Navigate between locations efficiently' },
 ]
 
-function Main({ onOpenPlace }) {
+function Main({ onOpenPlace, onOpenTripPlanner }) {
+  const handleJourneyToolClick = (optionTitle) => {
+    if (optionTitle.toLowerCase() === 'tour planner') {
+      onOpenTripPlanner?.()
+    }
+  }
+
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-2 py-3 sm:px-3 lg:px-4">
       <div className='flex flex-row'>
@@ -30,6 +36,7 @@ function Main({ onOpenPlace }) {
               <button
                 key={option.title}
                 type="button"
+                onClick={() => handleJourneyToolClick(option.title)}
                 className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-4 text-left transition-all duration-200 ${
                   option.active
                     ? 'border-violet-200 bg-violet-600 text-white shadow-lg shadow-violet-500/20'

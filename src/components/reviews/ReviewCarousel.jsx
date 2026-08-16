@@ -7,7 +7,7 @@ function ReviewCarousel() {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % reviews.length)
-    }, 3000)
+    }, 5000)
 
     return () => clearInterval(timer)
   }, [])

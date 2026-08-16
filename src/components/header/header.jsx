@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Header() {
+function Header({ onOpenTripPlanner, onOpenHome, onOpenSignIn }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [language, setLanguage] = useState('EN')
 
@@ -17,25 +17,14 @@ function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-2 sm:px-3 lg:px-4">
         {/* Logo */}
         <div className="flex shrink-0 items-center">
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-600 text-white"
-            aria-label="Site logo"
+          <button
+            type="button"
+            onClick={onOpenHome}
+            className="rounded-lg bg-violet-600 px-3 py-2 text-base font-semibold tracking-wide text-white transition hover:bg-violet-700"
+            aria-label="Go to home"
           >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 2l2.09 6.26L20.5 9.5l-5 3.64L17.18 20 12 16.9 6.82 20 8.5 13.14l-5-3.64 6.41-1.24L12 2z"
-              />
-            </svg>
-          </div>
+            Docent
+          </button>
         </div>
 
         {/* Search bar */}
@@ -67,6 +56,29 @@ function Header() {
         <nav className="flex items-center gap-1 sm:gap-2">
           <button
             type="button"
+            onClick={onOpenHome}
+            className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-violet-600/10 hover:text-violet-600 sm:inline-flex"
+          >
+            <svg
+              className="h-4 w-4 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5.5v-6h-5v6H4a1 1 0 01-1-1v-9.5z"
+              />
+            </svg>
+            Home
+          </button>
+
+          <button
+            type="button"
+            onClick={onOpenTripPlanner}
             className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-violet-600/10 hover:text-violet-600 sm:inline-flex"
           >
             <svg
@@ -90,24 +102,21 @@ function Header() {
             type="button"
             className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-black transition hover:bg-violet-600/10 hover:text-violet-600"
           >
-            <span className="relative flex shrink-0">
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-violet-600 ring-2 ring-white" />
-            </span>
-            Alerts
+            <svg
+              className="h-4 w-4 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 8.5L8.5 3h7L21 8.5 12 21 3 8.5z"
+              />
+            </svg>
+            Buy premium
           </button>
 
           <div className="mx-1 hidden h-6 w-px bg-black/10 sm:block" aria-hidden="true" />
@@ -116,6 +125,7 @@ function Header() {
 
           <button
             type="button"
+            onClick={onOpenSignIn}
             className="rounded-lg bg-black px-3 py-2 text-sm font-medium text-white transition hover:bg-violet-600"
           >
             SignIn
@@ -174,6 +184,28 @@ function Header() {
         </div>
         <button
           type="button"
+          onClick={onOpenHome}
+          className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-medium text-black transition hover:bg-violet-600/10 hover:text-violet-600 sm:hidden"
+        >
+          <svg
+            className="h-4 w-4 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5.5v-6h-5v6H4a1 1 0 01-1-1v-9.5z"
+            />
+          </svg>
+          Home
+        </button>
+        <button
+          type="button"
+          onClick={onOpenTripPlanner}
           className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-medium text-black transition hover:bg-violet-600/10 hover:text-violet-600 sm:hidden"
         >
           <svg
