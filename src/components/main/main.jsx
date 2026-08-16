@@ -2,12 +2,12 @@ import ReviewCarousel from '../reviews/ReviewCarousel.jsx'
 import Visit from './Visit.jsx'
 import Quotes from '../quotes/Quotes.jsx'
 const options = [
-  { title: 'Tour planner', icon: '✦', active: true, description: 'Plan your perfect tour itinerary' },
+  { title: 'Tour planner', icon: '✦', active: false, description: 'Plan your perfect tour itinerary' },
   { title: 'Crowd analysis', icon: '◌', active: false, description: 'Real-time crowd insights and statistics' },
   { title: 'Route navigator', icon: '↗', active: false, description: 'Navigate between locations efficiently' },
 ]
 
-function Main() {
+function Main({ onOpenPlace }) {
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-2 py-3 sm:px-3 lg:px-4">
       <div className='flex flex-row'>
@@ -51,7 +51,7 @@ function Main() {
 
       </div>
       <section className='px-2 mx-2'>
-        <Visit />
+        <Visit onOpenPlace={onOpenPlace} />
       </section>
       </div>
         <Quotes />

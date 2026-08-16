@@ -3,10 +3,23 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { mapData } from '../../data/mapData.js'
 
-function Visit() {
+const getPlaceRouteValue = (name) => {
+  const routeMap = {
+    'Bara Imam Bara': 'Bara Imambara',
+    'Clock Tower': 'Husainabad Clock Tower',
+    'Nimbu Park': 'Nimbu Park',
+    'Chowk': 'Chowk',
+    'Chowk Stadium': 'Chowk Stadium',
+  }
+
+  return routeMap[name] || name
+}
+
+function Visit({ onOpenPlace }) {
   const mapRef = useRef(null)
   const markerMapRef = useRef(new Map())
   const [selectedPlace, setSelectedPlace] = useState(mapData[0])
+  const [activeTab, setActiveTab] = useState(null)
 
   const handleSpotClick = (spot) => {
     const selected = mapData.find(place => place.Name === spot)
@@ -154,11 +167,15 @@ function Visit() {
             {mapData.map((place) => (
               <button
                 key={place.Name}
-                onClick={() => setSelectedPlace(place)}
+                onClick={() => {
+                  setSelectedPlace(place)
+                  setActiveTab(place.Name)
+                  onOpenPlace?.(getPlaceRouteValue(place.Name))
+                }}
                 onMouseEnter={() => openSpotPopup(place.Name)}
                 onMouseLeave={() => closeSpotPopup(place.Name)}
-                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
-                  selectedPlace.Name === place.Name
+                className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
+                  activeTab === place.Name
                     ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
                     : 'bg-white text-slate-700 border border-slate-200 hover:bg-violet-50 hover:border-violet-200'
                 }`}
