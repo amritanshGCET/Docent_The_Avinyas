@@ -67,6 +67,12 @@ function App() {
     navigateToPath(`/place/${encodeURIComponent(placeName)}`)
   const navigateToTripPlanner = () => navigateToPath('/trip-planner')
   const navigateToSignIn = () => navigateToPath('/signin')
+  const handleLogout = () => {
+    localStorage.removeItem(CURRENT_USER_STORAGE_KEY)
+    setCurrentUser(null)
+    window.dispatchEvent(new CustomEvent('docent-auth-change'))
+    navigateHome()
+  }
 
   return (
     <div className="flex min-h-svh flex-col bg-white text-black">
@@ -75,6 +81,7 @@ function App() {
         onOpenTripPlanner={navigateToTripPlanner}
         onOpenHome={navigateHome}
         onOpenSignIn={navigateToSignIn}
+        onLogout={handleLogout}
       />
       {route.type === 'home' ? (
         <Main onOpenPlace={navigateToPlace} onOpenTripPlanner={navigateToTripPlanner} />

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Header({ currentUser, onOpenTripPlanner, onOpenHome, onOpenSignIn }) {
+function Header({ currentUser, onOpenTripPlanner, onOpenHome, onOpenSignIn, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [language, setLanguage] = useState('EN')
 
@@ -126,28 +126,38 @@ function Header({ currentUser, onOpenTripPlanner, onOpenHome, onOpenSignIn }) {
          
 
           {currentUser ? (
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1.5 text-sm font-medium text-violet-700 transition hover:bg-violet-100"
-              aria-label={`Signed in as ${currentUser.name}`}
-            >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-600 text-white shadow-sm">
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M4 19c1.6-3 4.2-4.5 8-4.5s6.4 1.5 8 4.5" />
-                </svg>
-              </span>
-              <span className="hidden sm:inline">{displayName}</span>
-            </button>
+            <>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1.5 text-sm font-medium text-violet-700 transition hover:bg-violet-100"
+                aria-label={`Signed in as ${currentUser.name}`}
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-600 text-white shadow-sm">
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 19c1.6-3 4.2-4.5 8-4.5s6.4 1.5 8 4.5" />
+                  </svg>
+                </span>
+                <span className="hidden sm:inline">{displayName}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={onLogout}
+                className="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm font-medium text-black transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+              >
+                Log out
+              </button>
+            </>
           ) : (
             <button
               type="button"
