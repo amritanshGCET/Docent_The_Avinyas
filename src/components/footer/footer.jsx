@@ -1,6 +1,12 @@
 import React from 'react'
 
-function Footer() {
+function Footer({ onOpenHome }) {
+
+    const handleHomeClick = (event) => {
+        event.preventDefault()
+        onOpenHome?.()
+    }
+
     return (
         <footer className="bg-slate-900 text-slate-100 mt-12">
             <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -37,7 +43,7 @@ function Footer() {
                     <div>
                         <h4 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Quick Links</h4>
                         <ul className="space-y-2">
-                            <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Home</a></li>
+                            <li><a href="/" onClick={handleHomeClick} className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Home</a></li>
                             <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Explore Places</a></li>
                             <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Crowd Analysis</a></li>
                             <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Route Navigator</a></li>

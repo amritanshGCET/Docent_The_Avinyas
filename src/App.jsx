@@ -64,7 +64,7 @@ function App() {
       ) : (
         <PlacePage placeName={route.placeName} onBack={navigateHome} />
       )}
-      <Footer />
+      <Footer onOpenHome={navigateHome} />
     </div>
   )
 }

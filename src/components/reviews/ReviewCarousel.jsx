@@ -32,7 +32,7 @@ function ReviewCarousel() {
 
           <div className="flex items-center gap-1 rounded-full bg-white/80 px-3 py-2 text-sm font-semibold text-amber-500 shadow-sm ring-1 ring-black/5">
             <span aria-hidden="true">★</span>
-            <span>4.9/5</span>
+            <span>{activeReview.rating.toFixed(1)}/5</span>
           </div>
         </div>
 

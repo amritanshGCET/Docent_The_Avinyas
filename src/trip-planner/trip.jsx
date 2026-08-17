@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { mapData } from '../data/mapData.js';
 
 const createId = () => Date.now() + Math.random();
 
@@ -36,9 +37,19 @@ const buildDay = (dayNumber, dateValue, activities = initialActivities) => ({
 
 export default function TripMain() {
   const [destination, setDestination] = useState('');
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
   const [itinerary, setItinerary] = useState([
     buildDay(1, '2026-08-20'),
   ]);
+
+  const adjustAdults = (delta) => {
+    setAdults((prev) => Math.max(1, prev + delta));
+  };
+
+  const adjustChildren = (delta) => {
+    setChildren((prev) => Math.max(0, prev + delta));
+  };
 
   const addDay = () => {
     setItinerary((prev) => {
@@ -119,21 +130,37 @@ export default function TripMain() {
 
   const mapMarkers = useMemo(
     () =>
-      itinerary.flatMap((day, dayIndex) =>
-        day.activities.map((activity, activityIndex) => ({
-          id: `${day.id}-${activity.id}`,
-          position: [
-            48.8566 + dayIndex * 0.2 + activityIndex * 0.05,
-            2.3522 + activityIndex * 0.15,
-          ],
-          title: activity.title,
-          dayTitle: day.title,
-        })),
-      ),
-    [itinerary],
+      mapData.map((place) => ({
+        id: place.Name,
+        position: [place.x, place.y],
+        title: place.Name,
+        status: place.Status,
+        expectedCrowd: place.expectedCrowd,
+      })),
+    [],
   );
 
-  const defaultCenter = [48.8566, 2.3522];
+  const defaultCenter = useMemo(() => {
+    if (!mapData.length) return [26.8467, 80.9462];
+
+    const totals = mapData.reduce(
+      (acc, place) => ({
+        lat: acc.lat + place.x,
+        lng: acc.lng + place.y,
+      }),
+      { lat: 0, lng: 0 },
+    );
+
+    return [totals.lat / mapData.length, totals.lng / mapData.length];
+  }, []);
+
+  const estimatedBudget = useMemo(() => {
+    const perDayAdultCost = 600;
+    const perDayChildCost = 350;
+    const dayCount = itinerary.length;
+
+    return dayCount * ((adults * perDayAdultCost) + (children * perDayChildCost));
+  }, [itinerary.length, adults, children]);
 
   return (
     <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
@@ -141,7 +168,7 @@ export default function TripMain() {
         <section>
           <div className="mb-8">
             <h1 className="mb-2 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-              Plan your next adventure
+              Plan your next <span className='text-violet-600'>adventure</span>
             </h1>
             <p className="max-w-2xl text-base text-black/70 sm:text-lg">
               Build, organize, and map out your perfect itinerary.
@@ -262,7 +289,7 @@ export default function TripMain() {
 
         <aside className="space-y-5 lg:sticky lg:top-24 lg:h-fit">
           <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
-            <MapContainer center={defaultCenter} zoom={11} scrollWheelZoom className="h-90 w-full sm:h-105">
+            <MapContainer center={defaultCenter} zoom={14} scrollWheelZoom className="h-90 w-full sm:h-105">
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -273,7 +300,9 @@ export default function TripMain() {
                   <Popup>
                     <strong>{marker.title}</strong>
                     <br />
-                    {marker.dayTitle}
+                    {marker.status}
+                    <br />
+                    Expected crowd: {marker.expectedCrowd}
                   </Popup>
                 </Marker>
               ))}
@@ -287,13 +316,56 @@ export default function TripMain() {
                 <span>Duration:</span>
                 <span className="font-semibold text-black">{itinerary.length} Days</span>
               </div>
+
               <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
-                <span>Travelers:</span>
-                <span className="font-semibold text-black">2 Adults</span>
+                <span>Adults:</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-black/15 bg-white font-semibold text-black transition hover:border-violet-500 hover:text-violet-700"
+                    type="button"
+                    onClick={() => adjustAdults(-1)}
+                    aria-label="Decrease adults"
+                  >
+                    -
+                  </button>
+                  <span className="min-w-7 text-center font-semibold text-black">{adults}</span>
+                  <button
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-black/15 bg-white font-semibold text-black transition hover:border-violet-500 hover:text-violet-700"
+                    type="button"
+                    onClick={() => adjustAdults(1)}
+                    aria-label="Increase adults"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
+
+              <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
+                <span>Children:</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-black/15 bg-white font-semibold text-black transition hover:border-violet-500 hover:text-violet-700"
+                    type="button"
+                    onClick={() => adjustChildren(-1)}
+                    aria-label="Decrease children"
+                  >
+                    -
+                  </button>
+                  <span className="min-w-7 text-center font-semibold text-black">{children}</span>
+                  <button
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-black/15 bg-white font-semibold text-black transition hover:border-violet-500 hover:text-violet-700"
+                    type="button"
+                    onClick={() => adjustChildren(1)}
+                    aria-label="Increase children"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
               <div className="flex items-center justify-between rounded-lg bg-black/3 px-3 py-2">
                 <span>Est. Budget:</span>
-                <span className="text-lg font-semibold text-black">₹1,200</span>
+                <span className="text-lg font-semibold text-black">₹{estimatedBudget.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
