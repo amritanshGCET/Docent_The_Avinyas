@@ -6,6 +6,17 @@ import PlacePage from './Place/place.jsx'
 import TripPlannerPage from './trip-planner/trip.jsx'
 import SignInPage from './signin/signin.jsx'
 
+const CURRENT_USER_STORAGE_KEY = 'docent-current-user'
+
+const readCurrentUser = () => {
+  try {
+    const savedUser = localStorage.getItem(CURRENT_USER_STORAGE_KEY)
+    return savedUser ? JSON.parse(savedUser) : null
+  } catch {
+    return null
+  }
+}
+
 const resolveRoute = () => {
   const path = window.location.pathname
 
@@ -29,12 +40,21 @@ const resolveRoute = () => {
 
 function App() {
   const [route, setRoute] = useState(resolveRoute)
+  const [currentUser, setCurrentUser] = useState(readCurrentUser)
 
   useEffect(() => {
     const handleRouteChange = () => setRoute(resolveRoute())
+    const syncCurrentUser = () => setCurrentUser(readCurrentUser())
 
     window.addEventListener('popstate', handleRouteChange)
-    return () => window.removeEventListener('popstate', handleRouteChange)
+    window.addEventListener('docent-auth-change', syncCurrentUser)
+    window.addEventListener('storage', syncCurrentUser)
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange)
+      window.removeEventListener('docent-auth-change', syncCurrentUser)
+      window.removeEventListener('storage', syncCurrentUser)
+    }
   }, [])
 
   const navigateToPath = (path) => {
@@ -51,6 +71,7 @@ function App() {
   return (
     <div className="flex min-h-svh flex-col bg-white text-black">
       <Header
+        currentUser={currentUser}
         onOpenTripPlanner={navigateToTripPlanner}
         onOpenHome={navigateHome}
         onOpenSignIn={navigateToSignIn}

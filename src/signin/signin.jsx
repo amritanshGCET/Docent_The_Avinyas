@@ -1,5 +1,22 @@
 import { useState } from 'react'
 
+const USERS_STORAGE_KEY = 'docent-users'
+const CURRENT_USER_STORAGE_KEY = 'docent-current-user'
+
+const readUsers = () => {
+	try {
+		const savedUsers = JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) ?? '[]')
+		return Array.isArray(savedUsers) ? savedUsers : []
+	} catch {
+		return []
+	}
+}
+
+const navigateHome = () => {
+	window.history.pushState({}, '', '/')
+	window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 function SignInPage() {
 	const [mode, setMode] = useState('signin')
 	const [form, setForm] = useState({
@@ -8,15 +25,97 @@ function SignInPage() {
 		password: '',
 		remember: true,
 	})
+	const [status, setStatus] = useState({ type: '', message: '' })
 
 	const isSignUp = mode === 'signup'
 
 	const updateField = (key, value) => {
 		setForm((prev) => ({ ...prev, [key]: value }))
+		if (status.message) {
+			setStatus({ type: '', message: '' })
+		}
+	}
+
+	const switchMode = (nextMode) => {
+		setMode(nextMode)
+		setStatus({ type: '', message: '' })
 	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+
+		const trimmedName = form.name.trim()
+		const trimmedEmail = form.email.trim().toLowerCase()
+		const trimmedPassword = form.password.trim()
+
+		if (isSignUp && trimmedName.length < 2) {
+			setStatus({ type: 'error', message: 'Please enter a valid full name.' })
+			return
+		}
+
+		if (!trimmedEmail || !trimmedPassword) {
+			setStatus({ type: 'error', message: 'Email and password are required.' })
+			return
+		}
+
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+			setStatus({ type: 'error', message: 'Please enter a valid email address.' })
+			return
+		}
+
+		if (isSignUp) {
+			const users = readUsers()
+			const alreadyExists = users.some((user) => user.email.toLowerCase() === trimmedEmail)
+
+			if (alreadyExists) {
+				setStatus({ type: 'error', message: 'An account with this email already exists.' })
+				return
+			}
+
+			if (trimmedPassword.length < 6) {
+				setStatus({ type: 'error', message: 'Password must be at least 6 characters long.' })
+				return
+			}
+
+			const newUser = {
+				name: trimmedName,
+				email: trimmedEmail,
+				password: trimmedPassword,
+			}
+			const nextUsers = [...users, newUser]
+			localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(nextUsers))
+			localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify({ ...newUser, remember: form.remember }))
+			window.dispatchEvent(new CustomEvent('docent-auth-change'))
+
+			setStatus({
+				type: 'success',
+				message: `Welcome, ${newUser.name}! Your account has been created.`,
+			})
+			setForm({ name: '', email: '', password: '', remember: true })
+			setTimeout(() => navigateHome(), 800)
+			return
+		}
+
+		const users = readUsers()
+		const matchingUser = users.find(
+			(user) => user.email.toLowerCase() === trimmedEmail && user.password === trimmedPassword,
+		)
+
+		if (!matchingUser) {
+			setStatus({ type: 'error', message: 'Incorrect email or password. Please try again.' })
+			return
+		}
+
+		const currentUser = {
+			name: matchingUser.name,
+			email: matchingUser.email,
+			remember: form.remember,
+		}
+		localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(currentUser))
+		window.dispatchEvent(new CustomEvent('docent-auth-change'))
+		setStatus({ type: 'success', message: `Welcome back, ${matchingUser.name}!` })
+		setForm({ name: '', email: '', password: '', remember: true })
+		setTimeout(() => navigateHome(), 800)
 	}
 
 	return (
@@ -51,7 +150,7 @@ function SignInPage() {
 					<div className="mb-6 inline-flex rounded-xl bg-black/5 p-1">
 						<button
 							type="button"
-							onClick={() => setMode('signin')}
+							onClick={() => switchMode('signin')}
 							className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
 								!isSignUp ? 'bg-white text-black shadow-sm' : 'text-black/70 hover:text-black'
 							}`}
@@ -60,7 +159,7 @@ function SignInPage() {
 						</button>
 						<button
 							type="button"
-							onClick={() => setMode('signup')}
+							onClick={() => switchMode('signup')}
 							className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
 								isSignUp ? 'bg-white text-black shadow-sm' : 'text-black/70 hover:text-black'
 							}`}
@@ -75,6 +174,18 @@ function SignInPage() {
 							? 'Start with your details and begin planning your trips.'
 							: 'Enter your credentials to continue.'}
 					</p>
+
+					{status.message ? (
+						<div
+							className={`mt-4 rounded-xl border px-3 py-2 text-sm ${
+								status.type === 'error'
+									? 'border-red-200 bg-red-50 text-red-700'
+									: 'border-emerald-200 bg-emerald-50 text-emerald-700'
+							}`}
+						>
+							{status.message}
+						</div>
+					) : null}
 
 					<form className="mt-6 space-y-4" onSubmit={handleSubmit}>
 						{isSignUp ? (
