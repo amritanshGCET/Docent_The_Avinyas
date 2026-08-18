@@ -1,10 +1,15 @@
 import React from 'react'
 
-function Footer({ onOpenHome }) {
+function Footer({ onOpenHome, onOpenRouteNavigator }) {
 
     const handleHomeClick = (event) => {
         event.preventDefault()
         onOpenHome?.()
+    }
+
+    const handleRouteNavigatorClick = (event) => {
+        event.preventDefault()
+        onOpenRouteNavigator?.()
     }
 
     return (
@@ -46,7 +51,7 @@ function Footer({ onOpenHome }) {
                             <li><a href="/" onClick={handleHomeClick} className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Home</a></li>
                             <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Explore Places</a></li>
                             <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Crowd Analysis</a></li>
-                            <li><a href="#" className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Route Navigator</a></li>
+                            <li><a href="/route-navigator" onClick={handleRouteNavigatorClick} className="text-sm text-slate-400 hover:text-violet-400 transition-colors">Route Navigator</a></li>
                         </ul>
                     </div>
 

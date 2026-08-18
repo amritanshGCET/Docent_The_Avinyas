@@ -5,6 +5,7 @@ import Footer from './components/footer/footer.jsx'
 import PlacePage from './Place/place.jsx'
 import TripPlannerPage from './trip-planner/trip.jsx'
 import SignInPage from './signin/signin.jsx'
+import RouteNavigatorPage from './route-navigator/routeNavigator.jsx'
 
 const CURRENT_USER_STORAGE_KEY = 'docent-current-user'
 
@@ -26,6 +27,10 @@ const resolveRoute = () => {
 
   if (path === '/signin') {
     return { type: 'signin', placeName: null }
+  }
+
+  if (path === '/route-navigator') {
+    return { type: 'routeNavigator', placeName: null }
   }
 
   if (path.startsWith('/place/')) {
@@ -67,6 +72,7 @@ function App() {
     navigateToPath(`/place/${encodeURIComponent(placeName)}`)
   const navigateToTripPlanner = () => navigateToPath('/trip-planner')
   const navigateToSignIn = () => navigateToPath('/signin')
+  const navigateToRouteNavigator = () => navigateToPath('/route-navigator')
   const handleLogout = () => {
     localStorage.removeItem(CURRENT_USER_STORAGE_KEY)
     setCurrentUser(null)
@@ -89,10 +95,12 @@ function App() {
         <TripPlannerPage />
       ) : route.type === 'signin' ? (
         <SignInPage />
+      ) : route.type === 'routeNavigator' ? (
+        <RouteNavigatorPage />
       ) : (
         <PlacePage placeName={route.placeName} onBack={navigateHome} />
       )}
-      <Footer onOpenHome={navigateHome} />
+      <Footer onOpenHome={navigateHome} onOpenRouteNavigator={navigateToRouteNavigator} />
     </div>
   )
 }
